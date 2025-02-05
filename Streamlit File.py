@@ -8,7 +8,7 @@ with open('gb_model_final.pkl', 'rb') as model_file:
     gb_model_final = pickle.load(model_file)
 
 # Streamlit UI
-st.title("Predicting with Final Gradient Boosting Model")
+st.title("Profit Predictor: Enhancing Business Decisions with Data Science")
 
 # User inputs for the top 6 features
 order_item_profit_ratio = st.number_input("Order Item Profit Ratio", min_value=0.0, value=0.1, step=0.01)
