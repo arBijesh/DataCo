@@ -27,7 +27,7 @@ st.markdown("""
 """)
 
 # Add an image for the Supply Chain
-st.image("supply_chain_image.jpg", caption="Supply Chain Process Overview", use_column_width=True)
+st.image("supply_chain_image.jpg", caption="Supply Chain Process Overview", use_container_width=True)
 
 # User Inputs and Prediction Section
 st.markdown("### Enter the values below to predict the profit per order:")
