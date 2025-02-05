@@ -28,6 +28,6 @@ if st.button("Predict"):
     prediction = gb_model_final.predict(input_data)
     
     # Display the prediction
-    st.subheader("Predicted Target Value:")
+    st.subheader("Predicted Profit is :")
     st.write(f"Predicted Value: {prediction[0]:.2f}")
 # %%
