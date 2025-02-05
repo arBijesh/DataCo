@@ -14,11 +14,12 @@ st.markdown("""
     <style>
         .watermark {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
+            opacity: 0.1;
         }
     </style>
 """, unsafe_allow_html=True)
