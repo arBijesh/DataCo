@@ -1,51 +1,85 @@
-# %% 
+# %%
 import streamlit as st
 import pickle
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Load the pre-trained model
 with open('gb_model_final.pkl', 'rb') as model_file:
     gb_model_final = pickle.load(model_file)
 
-# Streamlit UI
-st.set_page_config(page_title="Profit Predictor", page_icon="💰", layout="centered")
+# Streamlit UI setup
+st.set_page_config(page_title="Profit Predictor - DataCo Supply Chain", page_icon="📦", layout="wide")
+
+# Title and Description
 st.title("Profit Predictor: Enhancing Business Decisions with Data Science")
 
-# Introduction and explanation
+# Dataset Introduction
 st.markdown("""
-    This app uses a machine learning model to predict the **Profit per Order** based on 
-    key business features. Simply enter the details below, and the model will predict 
-    the expected profit in dollars for a given set of inputs.
+    ### About the DataSet
+    The dataset used in this analysis is provided by **DataCo Global** and pertains to the **Supply Chain** domain. 
+    It allows the use of **Machine Learning Algorithms** and **R Software** for analysis, offering insights into key areas such as:
+    
+    - **Provisioning**
+    - **Production**
+    - **Sales**
+    - **Commercial Distribution**
+
+    Additionally, the dataset allows the correlation of **Structured Data** with **Unstructured Data** for knowledge generation, making it a valuable resource for Supply Chain analysis.
 """)
 
-# User inputs for the top 6 features with tooltips
-order_item_profit_ratio = st.number_input(
-    "Order Item Profit Ratio", min_value=0.0, value=0.1, step=0.01,
-    help="Ratio of profit per order item relative to the cost."
-)
-sales_per_customer = st.number_input(
-    "Sales per customer", min_value=0.0, value=100.0, step=1.0,
-    help="Average sales per customer."
-)
-order_item_total = st.number_input(
-    "Order Item Total", min_value=0.0, value=500.0, step=10.0,
-    help="Total price of all items in the order."
-)
-order_item_product_price = st.number_input(
-    "Order Item Product Price", min_value=0.0, value=50.0, step=1.0,
-    help="Price of a single product in the order."
-)
-sales = st.number_input(
-    "Sales", min_value=0.0, value=1000.0, step=10.0,
-    help="Total sales amount generated."
-)
-product_price = st.number_input(
-    "Product Price", min_value=0.0, value=200.0, step=1.0,
-    help="Price of a single product."
-)
+# Add an image for the Supply Chain
+st.image("supply_chain_image.jpg", caption="Supply Chain Process Overview", use_column_width=True)
 
-# Add a section header for the prediction
-st.markdown("### Enter the values and click **'Predict'** to get the profit prediction.")
+# Add more sections with insights or graphs
+
+# Correlation Heatmap of the dataset
+st.subheader("Correlation Heatmap of Key Features in the Dataset")
+# Assuming you have a correlation DataFrame 'df' that contains the dataset
+# df = load_your_dataset()  # Load your dataset here if needed
+
+# Example using random data, replace this with actual data
+import pandas as pd
+import numpy as np
+
+# Generate some random data (replace with actual dataset)
+np.random.seed(42)
+data = pd.DataFrame(np.random.rand(100, 6), columns=["Order Item Profit Ratio", "Sales per Customer", 
+                                                     "Order Item Total", "Order Item Product Price", 
+                                                     "Sales", "Product Price"])
+
+# Compute correlation matrix
+corr = data.corr()
+
+# Plot heatmap
+plt.figure(figsize=(10, 6))
+sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f', linewidths=0.5)
+st.pyplot()
+
+# Feature Importance Visualization (Bar Chart)
+st.subheader("Feature Importance - Gradient Boosting Model")
+# Example feature importance, replace with actual data from your model
+features = ["Order Item Profit Ratio", "Sales per Customer", "Order Item Total", 
+            "Order Item Product Price", "Sales", "Product Price"]
+importance = [0.722, 0.137, 0.118, 0.007, 0.007, 0.007]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.barh(features, importance, color='skyblue')
+ax.set_xlabel('Importance')
+ax.set_title('Feature Importance in Predicting Profit per Order')
+st.pyplot(fig)
+
+# User Inputs and Prediction Section
+st.markdown("### Enter the values below to predict the profit per order:")
+
+# User inputs for the top 6 features
+order_item_profit_ratio = st.number_input("Order Item Profit Ratio", min_value=0.0, value=0.1, step=0.01)
+sales_per_customer = st.number_input("Sales per customer", min_value=0.0, value=100.0, step=1.0)
+order_item_total = st.number_input("Order Item Total", min_value=0.0, value=500.0, step=10.0)
+order_item_product_price = st.number_input("Order Item Product Price", min_value=0.0, value=50.0, step=1.0)
+sales = st.number_input("Sales", min_value=0.0, value=1000.0, step=10.0)
+product_price = st.number_input("Product Price", min_value=0.0, value=200.0, step=1.0)
 
 # Make prediction when the button is pressed
 if st.button("Predict"):
