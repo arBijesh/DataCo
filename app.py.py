@@ -29,17 +29,17 @@ st.title("Profit Predictor: Enhancing Business Decisions with Data Science")
 
 # Dataset Introduction
 st.markdown("""
-    ### About the DataSet
-    The dataset used in this analysis is provided by **DataCo Global** and pertains to the **Supply Chain** domain. 
-    It allows the use of **Machine Learning Algorithms** and **R Software** for analysis, offering insights into key areas such as:
-    
-    - **Provisioning**
-    - **Production**
-    - **Sales**
-    - **Commercial Distribution**
+    ### About the Dataset
+    The **DataCo Global Supply Chain Dataset** is a comprehensive resource designed to analyze and optimize key aspects of the **supply chain**. By leveraging **Machine Learning Algorithms** and **Data Science techniques**, this dataset provides actionable insights for businesses in areas such as:
 
-    Additionally, the dataset allows the correlation of **Structured Data** with **Unstructured Data** for knowledge generation, making it a valuable resource for Supply Chain analysis.
+    - **Inventory Management**: Optimizing stock levels to meet demand without overstocking.
+    - **Demand Forecasting**: Predicting sales trends and adjusting production schedules accordingly.
+    - **Profitability Analysis**: Identifying factors that influence profits per order and highlighting areas for improvement.
+    - **Sales Optimization**: Analyzing sales data to understand customer behavior and refine pricing strategies.
+
+    With this dataset, businesses can transform raw data into strategic decisions, driving better operational efficiency, customer satisfaction, and overall profitability. By combining **structured data** with **advanced analytical models**, it empowers organizations to make data-driven decisions that streamline operations and improve outcomes.
 """)
+
 
 # Add an image as watermark in the background
 st.markdown('<img src="supply_chain_image.jpg" class="watermark">', unsafe_allow_html=True)
