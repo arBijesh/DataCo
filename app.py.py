@@ -1,9 +1,6 @@
-# %%
 import streamlit as st
 import pickle
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Load the pre-trained model
 with open('gb_model_final.pkl', 'rb') as model_file:
@@ -32,44 +29,6 @@ st.markdown("""
 # Add an image for the Supply Chain
 st.image("supply_chain_image.jpg", caption="Supply Chain Process Overview", use_column_width=True)
 
-# Add more sections with insights or graphs
-
-# Correlation Heatmap of the dataset
-st.subheader("Correlation Heatmap of Key Features in the Dataset")
-# Assuming you have a correlation DataFrame 'df' that contains the dataset
-# df = load_your_dataset()  # Load your dataset here if needed
-
-# Example using random data, replace this with actual data
-import pandas as pd
-import numpy as np
-
-# Generate some random data (replace with actual dataset)
-np.random.seed(42)
-data = pd.DataFrame(np.random.rand(100, 6), columns=["Order Item Profit Ratio", "Sales per Customer", 
-                                                     "Order Item Total", "Order Item Product Price", 
-                                                     "Sales", "Product Price"])
-
-# Compute correlation matrix
-corr = data.corr()
-
-# Plot heatmap
-plt.figure(figsize=(10, 6))
-sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f', linewidths=0.5)
-st.pyplot()
-
-# Feature Importance Visualization (Bar Chart)
-st.subheader("Feature Importance - Gradient Boosting Model")
-# Example feature importance, replace with actual data from your model
-features = ["Order Item Profit Ratio", "Sales per Customer", "Order Item Total", 
-            "Order Item Product Price", "Sales", "Product Price"]
-importance = [0.722, 0.137, 0.118, 0.007, 0.007, 0.007]
-
-fig, ax = plt.subplots(figsize=(8, 4))
-ax.barh(features, importance, color='skyblue')
-ax.set_xlabel('Importance')
-ax.set_title('Feature Importance in Predicting Profit per Order')
-st.pyplot(fig)
-
 # User Inputs and Prediction Section
 st.markdown("### Enter the values below to predict the profit per order:")
 
@@ -96,5 +55,3 @@ if st.button("Predict"):
 
     # Add a success message for better user experience
     st.success("The model has successfully made a prediction!")
-
-# %% 
