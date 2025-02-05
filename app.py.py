@@ -9,6 +9,20 @@ with open('gb_model_final.pkl', 'rb') as model_file:
 # Streamlit UI setup
 st.set_page_config(page_title="Profit Predictor - DataCo Supply Chain", page_icon="📦", layout="wide")
 
+# Add custom CSS for watermark effect
+st.markdown("""
+    <style>
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Title and Description
 st.title("Profit Predictor: Enhancing Business Decisions with Data Science")
 
@@ -26,8 +40,8 @@ st.markdown("""
     Additionally, the dataset allows the correlation of **Structured Data** with **Unstructured Data** for knowledge generation, making it a valuable resource for Supply Chain analysis.
 """)
 
-# Add an image for the Supply Chain
-st.image("supply_chain_image.jpg", caption="Supply Chain Process Overview", use_container_width=True)
+# Add an image as watermark in the background
+st.markdown('<img src="supply_chain_image.jpg" class="watermark">', unsafe_allow_html=True)
 
 # User Inputs and Prediction Section
 st.markdown("### Enter the values below to predict the profit per order:")
