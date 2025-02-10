@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 # Load the trained model
-with open('gb_model_final_hyper.pkl', 'rb') as model_file:
+with open('gb_model_final.pkl', 'rb') as model_file:
     gb_model_final = pickle.load(model_file)
 
 # Define Market and Department categories (MUST match training data)
@@ -14,16 +14,8 @@ department_options = ["Book Shop", "Discs Shop", "Fan Shop", "Fitness", "Footwea
 
 # Default Order Item Profit Ratio based on Department Name
 profit_ratio_defaults = {
-    "Book Shop": 0.25,
-    "Discs Shop": 0.30,
-    "Fan Shop": 0.35,
-    "Fitness": 0.40,
-    "Footwear": 0.45,
-    "Golf": 0.50,
-    "Health and Beauty": 0.55,
-    "Outdoors": 0.60,
-    "Pet Shop": 0.65,
-    "Technology": 0.70
+    "Book Shop": 0.25, "Discs Shop": 0.30, "Fan Shop": 0.35, "Fitness": 0.40, "Footwear": 0.45,
+    "Golf": 0.50, "Health and Beauty": 0.55, "Outdoors": 0.60, "Pet Shop": 0.65, "Technology": 0.70
 }
 
 # Streamlit UI setup
@@ -32,14 +24,6 @@ st.set_page_config(page_title="Profit Predictor - DataCo Supply Chain", page_ico
 # Title and Description
 st.title("Profit Predictor: Enhancing Business Decisions with Data Science")
 
-# Dataset Introduction
-st.markdown("""
-    ### About the Dataset
-    The **DataCo Global Supply Chain Dataset** provides insights into key **supply chain** metrics.
-    This predictor helps businesses optimize **profitability** by leveraging Machine Learning.
-""")
-
-# User Inputs for Numerical Features
 st.markdown("### 📊 Enter Order Details to Predict Profit:")
 
 # Dropdowns for categorical variables
@@ -96,13 +80,17 @@ expected_columns = [
 # Add missing columns with 0 (important for consistency with training data)
 for col in expected_columns:
     if col not in input_data.columns:
-        input_data[col] = 0
+        input_data[col] = 0  # Ensures missing features don't break prediction
 
 # Reorder columns to match training data
 input_data = input_data[expected_columns]
 
 # Make Prediction
 if st.button("Predict"):
+    # Print column names for debugging
+    st.write("🔍 **Model expects features:**", gb_model_final.feature_names_in_)
+    st.write("📊 **Current input features:**", list(input_data.columns))
+
     # Predict using the trained model
     prediction = gb_model_final.predict(input_data)
     
