@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 # Load the trained model
-with open('gb_model_final.pkl', 'rb') as model_file:
+with open('gb_model_final_hyper.pkl', 'rb') as model_file:
     gb_model_final = pickle.load(model_file)
 
 # Define Market and Department categories (MUST match training data)
