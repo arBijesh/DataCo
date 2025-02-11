@@ -85,17 +85,7 @@ profit_ratio_defaults = {
     "Technology": 0.65
 }
 
-# Store profit ratio as session state to ensure updates
-if "profit_ratio" not in st.session_state:
-    st.session_state["profit_ratio"] = profit_ratio_defaults.get(selected_department, 0.3)
-
-# User-adjustable profit ratio
-profit_ratio = st.slider("📈 Profit Ratio", min_value=0.0, max_value=1.0, step=0.01, value=st.session_state["profit_ratio"])
-
-# Update session state when department changes
-if selected_department in profit_ratio_defaults:
-    st.session_state["profit_ratio"] = profit_ratio_defaults[selected_department]
-
+profit_ratio = st.slider("📈 Profit Ratio", min_value=0.0, max_value=1.0, step=0.01, value=profit_ratio_defaults.get(selected_department, 0.3))
 product_price = st.number_input("💰 Product Price", min_value=0.0, step=0.01)
 discount_rate = st.slider("🎯 Order Item Discount Rate", min_value=0.0, max_value=1.0, step=0.01)
 
@@ -107,11 +97,14 @@ encoded_country = order_country_encoder.transform([selected_country])[0]
 # Prepare department encoding
 department_encoding = [1 if dept == selected_department else 0 for dept in department_options]
 
-# Prepare input data dynamically
-input_data = np.array([
-    encoded_market, encoded_region, encoded_country,
+# Define feature names (must match training data feature names)
+feature_names = ["Market", "Order_Region", "Order_Country", "Profit_Ratio", "Product_Price", "Discount_Rate"] + department_options
+
+# Convert input data into a DataFrame
+input_data = pd.DataFrame([[
+    encoded_market, encoded_region, encoded_country, 
     profit_ratio, product_price, discount_rate
-] + department_encoding).reshape(1, -1)
+] + department_encoding], columns=feature_names)
 
 # Predict Button
 if st.button("🚀 Predict Profit"):
