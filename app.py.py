@@ -28,7 +28,7 @@ st.markdown(
         padding: 5px;
         color: white;
         backdrop-filter: blur(15px);
-        width: 300px;
+        width: 200px;
     }
     .stButton > button {
         background: linear-gradient(45deg, #FF512F, #DD2476);
