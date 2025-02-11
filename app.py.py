@@ -94,17 +94,18 @@ encoded_market = market_encoder.transform([selected_market])[0]
 encoded_region = order_region_encoder.transform([selected_region])[0]
 encoded_country = order_country_encoder.transform([selected_country])[0]
 
-# Prepare department encoding
-department_encoding = [1 if dept == selected_department else 0 for dept in department_options]
+# One-hot encode department names
+department_encoded = {f"Department Name_{dept}": 0 for dept in department_options}
+department_encoded[f"Department Name_{selected_department}"] = 1  # Set the selected department to 1
 
 # Define feature names (must match training data feature names)
-feature_names = ["Market", "Order_Region", "Order_Country", "Profit_Ratio", "Product_Price", "Discount_Rate"] + department_options
+feature_names = ["Market", "Order_Region", "Order_Country", "Profit_Ratio", "Product_Price", "Discount_Rate"] + list(department_encoded.keys())
 
 # Convert input data into a DataFrame
 input_data = pd.DataFrame([[
     encoded_market, encoded_region, encoded_country, 
     profit_ratio, product_price, discount_rate
-] + department_encoding], columns=feature_names)
+] + list(department_encoded.values())], columns=feature_names)
 
 # Predict Button
 if st.button("🚀 Predict Profit"):
