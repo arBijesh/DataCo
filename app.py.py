@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 import numpy as np
 import pandas as pd
+import base64
 
 # Load trained model
 with open('gb_model_final_hyper.pkl', 'rb') as model_file:
@@ -22,25 +23,34 @@ profit_ratio_defaults = {
     "Pet Shop": 0.0001, "Technology": 0.0020
 }
 
+# Function to encode the local image
+def get_base64_of_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode()
+
+# Apply background image
+def set_background(image_path):
+    base64_image = get_base64_of_image(image_path)
+    bg_style = f"""
+    <style>
+    [data-testid="stAppViewContainer"] {{
+        background-image: url("data:image/png;base64,{base64_image}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }}
+    [data-testid="stHeader"] {{
+        background: rgba(0, 0, 0, 0);  /* Transparent header */
+    }}
+    </style>
+    """
+    st.markdown(bg_style, unsafe_allow_html=True)
+
+# Call the function to set background
+set_background("background.jpg")  # Make sure this image is in the same folder
+
 # Streamlit UI
 st.set_page_config(page_title="Profit Predictor - DataCo Supply Chain", page_icon="📦", layout="wide")
-
-# Custom CSS for background
-page_bg_img = """
-<style>
-[data-testid="stAppViewContainer"] {
-    background-image: url("https://www.example.com/supply_chain_background.jpg");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-}
-[data-testid="stHeader"] {
-    background: rgba(0, 0, 0, 0);  /* Transparent header */
-}
-</style>
-"""
-st.markdown(page_bg_img, unsafe_allow_html=True)
-
 st.title("Profit Predictor: Enhancing Business Decisions with Data Science")
 st.markdown("### 📊 Enter Order Details to Predict Profit:")
 
