@@ -4,24 +4,8 @@ import numpy as np
 import pandas as pd
 import base64
 
-# Load trained model
-with open('gb_model_final_hyper.pkl', 'rb') as model_file:
-    gb_model_final = pickle.load(model_file)
-
-# Get expected feature names from the model
-expected_columns = list(gb_model_final.feature_names_in_)
-
-# Define categorical options
-market_options = ["Europe", "LATAM", "Pacific Asia", "USCA"]
-department_options = ["Book Shop", "Discs Shop", "Fan Shop", "Fitness", "Footwear",
-                      "Golf", "Health and Beauty ", "Outdoors", "Pet Shop", "Technology"]
-
-# Default Profit Ratios
-profit_ratio_defaults = {
-    "Book Shop": 0.46, "Discs Shop": 0.14, "Fan Shop": 0.13, "Fitness": 0.0059,
-    "Footwear": 0.0043, "Golf": 0.0001, "Health and Beauty ": 0.0001, "Outdoors": 0.0005,
-    "Pet Shop": 0.0001, "Technology": 0.0020
-}
+# ✅ First Streamlit command (MUST be at the very top)
+st.set_page_config(page_title="Profit Predictor - DataCo Supply Chain", page_icon="📦", layout="wide")
 
 # Function to encode the local image
 def get_base64_of_image(image_path):
@@ -46,11 +30,28 @@ def set_background(image_path):
     """
     st.markdown(bg_style, unsafe_allow_html=True)
 
-# Call the function to set background
-set_background("background.jpg")  # Make sure this image is in the same folder
+# Call the function to set background (make sure "background.jpg" exists in the same folder)
+set_background("background.jpg")
 
-# Streamlit UI
-st.set_page_config(page_title="Profit Predictor - DataCo Supply Chain", page_icon="📦", layout="wide")
+# Load trained model
+with open('gb_model_final_hyper.pkl', 'rb') as model_file:
+    gb_model_final = pickle.load(model_file)
+
+# Get expected feature names from the model
+expected_columns = list(gb_model_final.feature_names_in_)
+
+# Define categorical options
+market_options = ["Europe", "LATAM", "Pacific Asia", "USCA"]
+department_options = ["Book Shop", "Discs Shop", "Fan Shop", "Fitness", "Footwear",
+                      "Golf", "Health and Beauty ", "Outdoors", "Pet Shop", "Technology"]
+
+# Default Profit Ratios
+profit_ratio_defaults = {
+    "Book Shop": 0.46, "Discs Shop": 0.14, "Fan Shop": 0.13, "Fitness": 0.0059,
+    "Footwear": 0.0043, "Golf": 0.0001, "Health and Beauty ": 0.0001, "Outdoors": 0.0005,
+    "Pet Shop": 0.0001, "Technology": 0.0020
+}
+
 st.title("Profit Predictor: Enhancing Business Decisions with Data Science")
 st.markdown("### 📊 Enter Order Details to Predict Profit:")
 
