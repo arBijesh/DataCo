@@ -25,7 +25,41 @@ expected_columns = list(gb_model_final.feature_names_in_)
 market_options = ["Europe", "LATAM", "Pacific Asia", "USCA"]
 department_options = ["Book Shop", "Discs Shop", "Fan Shop", "Fitness", "Footwear",
                       "Golf", "Health and Beauty", "Outdoors", "Pet Shop", "Technology"]
-order_country_options = ["USA", "Germany", "India", "France", "Brazil", "UK", "Japan", "China"]  # Add real country options
+order_country_options = ['Indonesia', 'India', 'Australia', 'China', 'Japón',
+       'Corea del Sur', 'Singapur', 'Turquía', 'Mongolia',
+       'Estados Unidos', 'Nigeria', 'República Democrática del Congo',
+       'Senegal', 'Marruecos', 'Alemania', 'Francia', 'Países Bajos',
+       'Reino Unido', 'Guatemala', 'El Salvador', 'Panamá',
+       'República Dominicana', 'Venezuela', 'Colombia', 'Honduras',
+       'Brasil', 'México', 'Uruguay', 'Argentina', 'Cuba', 'Perú',
+       'Nicaragua', 'Ecuador', 'Angola', 'Sudán', 'Somalia',
+       'Costa de Marfil', 'Egipto', 'Italia', 'España', 'Suecia',
+       'Austria', 'Canada', 'Madagascar', 'Argelia', 'Liberia', 'Zambia',
+       'Níger', 'SudAfrica', 'Mozambique', 'Tanzania', 'Ruanda', 'Israel',
+       'Nueva Zelanda', 'Bangladés', 'Tailandia', 'Irak', 'Arabia Saudí',
+       'Filipinas', 'Kazajistán', 'Irán', 'Myanmar (Birmania)',
+       'Uzbekistán', 'Benín', 'Camerún', 'Kenia', 'Togo', 'Ucrania',
+       'Polonia', 'Portugal', 'Rumania', 'Trinidad y Tobago',
+       'Afganistán', 'Pakistán', 'Vietnam', 'Malasia', 'Finlandia',
+       'Rusia', 'Irlanda', 'Noruega', 'Eslovaquia', 'Bélgica', 'Bolivia',
+       'Chile', 'Jamaica', 'Yemen', 'Ghana', 'Guinea', 'Etiopía',
+       'Bulgaria', 'Kirguistán', 'Georgia', 'Nepal',
+       'Emiratos Árabes Unidos', 'Camboya', 'Uganda', 'Lesoto',
+       'Lituania', 'Suiza', 'Hungría', 'Dinamarca', 'Haití',
+       'Bielorrusia', 'Croacia', 'Laos', 'Baréin', 'Macedonia',
+       'República Checa', 'Sri Lanka', 'Zimbabue', 'Eritrea',
+       'Burkina Faso', 'Costa Rica', 'Libia', 'Barbados', 'Tayikistán',
+       'Siria', 'Guadalupe', 'Papúa Nueva Guinea', 'Azerbaiyán',
+       'Turkmenistán', 'Paraguay', 'Jordania', 'Hong Kong', 'Martinica',
+       'Moldavia', 'Qatar', 'Mali', 'Albania', 'República del Congo',
+       'Bosnia y Herzegovina', 'Omán', 'Túnez', 'Sierra Leona', 'Yibuti',
+       'Burundi', 'Montenegro', 'Gabón', 'Sudán del Sur', 'Luxemburgo',
+       'Namibia', 'Mauritania', 'Grecia', 'Suazilandia', 'Guyana',
+       'Guayana Francesa', 'República Centroafricana', 'Taiwán',
+       'Estonia', 'Líbano', 'Chipre', 'Guinea-Bissau', 'Surinam',
+       'Belice', 'Eslovenia', 'República de Gambia', 'Botsuana',
+       'Armenia', 'Guinea Ecuatorial', 'Kuwait', 'Bután', 'Chad',
+       'Serbia', 'Sáhara Occidental']  # Add real country options
 
 # UI Inputs
 selected_market = st.selectbox("🌎 Market", market_options)
