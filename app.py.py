@@ -25,9 +25,10 @@ st.markdown(
     .stSelectbox, .stNumber_input, .stButton {
         background: rgba(255, 255, 255, 0.3);
         border-radius: 10px;
-        padding: 10px;
+        padding: 5px;
         color: white;
         backdrop-filter: blur(15px);
+        width: 300px;
     }
     .stButton > button {
         background: linear-gradient(45deg, #FF512F, #DD2476);
