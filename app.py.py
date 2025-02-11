@@ -3,117 +3,114 @@ import pickle
 import numpy as np
 import pandas as pd
 
-# Set up the Streamlit page
+# Set up the page
 st.set_page_config(page_title="Profit Predictor - DataCo Supply Chain", page_icon="📦", layout="wide")
 
 st.title("🚀 Profit Predictor: Enhancing Business Decisions with Data Science")
 st.markdown("### 📊 Enter Order Details to Predict Profit:")
 
-# Load trained model
+# Load trained Gradient Boosting model
 with open("gb_model_final_hyperparameter.pkl", "rb") as model_file:
-    gb_model_final = pickle.load(model_file)
+    model = pickle.load(model_file)
 
-# Load encoders
+# Load LabelEncoders
 market_encoder = pickle.load(open("market_encoder.pkl", "rb"))
 order_region_encoder = pickle.load(open("order_region_encoder.pkl", "rb"))
 order_country_encoder = pickle.load(open("order_country_encoder.pkl", "rb"))
-
-# Get expected feature names from the trained model
-expected_columns = list(gb_model_final.feature_names_in_)
 
 # Define categorical options
 market_options = ["Europe", "LATAM", "Pacific Asia", "USCA"]
 department_options = ["Book Shop", "Discs Shop", "Fan Shop", "Fitness", "Footwear",
                       "Golf", "Health and Beauty", "Outdoors", "Pet Shop", "Technology"]
-order_country_options = ['Indonesia', 'India', 'Australia', 'China', 'Japón',
-       'Corea del Sur', 'Singapur', 'Turquía', 'Mongolia',
-       'Estados Unidos', 'Nigeria', 'República Democrática del Congo',
-       'Senegal', 'Marruecos', 'Alemania', 'Francia', 'Países Bajos',
-       'Reino Unido', 'Guatemala', 'El Salvador', 'Panamá',
-       'República Dominicana', 'Venezuela', 'Colombia', 'Honduras',
-       'Brasil', 'México', 'Uruguay', 'Argentina', 'Cuba', 'Perú',
-       'Nicaragua', 'Ecuador', 'Angola', 'Sudán', 'Somalia',
-       'Costa de Marfil', 'Egipto', 'Italia', 'España', 'Suecia',
-       'Austria', 'Canada', 'Madagascar', 'Argelia', 'Liberia', 'Zambia',
-       'Níger', 'SudAfrica', 'Mozambique', 'Tanzania', 'Ruanda', 'Israel',
-       'Nueva Zelanda', 'Bangladés', 'Tailandia', 'Irak', 'Arabia Saudí',
-       'Filipinas', 'Kazajistán', 'Irán', 'Myanmar (Birmania)',
-       'Uzbekistán', 'Benín', 'Camerún', 'Kenia', 'Togo', 'Ucrania',
-       'Polonia', 'Portugal', 'Rumania', 'Trinidad y Tobago',
-       'Afganistán', 'Pakistán', 'Vietnam', 'Malasia', 'Finlandia',
-       'Rusia', 'Irlanda', 'Noruega', 'Eslovaquia', 'Bélgica', 'Bolivia',
-       'Chile', 'Jamaica', 'Yemen', 'Ghana', 'Guinea', 'Etiopía',
-       'Bulgaria', 'Kirguistán', 'Georgia', 'Nepal',
-       'Emiratos Árabes Unidos', 'Camboya', 'Uganda', 'Lesoto',
-       'Lituania', 'Suiza', 'Hungría', 'Dinamarca', 'Haití',
-       'Bielorrusia', 'Croacia', 'Laos', 'Baréin', 'Macedonia',
-       'República Checa', 'Sri Lanka', 'Zimbabue', 'Eritrea',
-       'Burkina Faso', 'Costa Rica', 'Libia', 'Barbados', 'Tayikistán',
-       'Siria', 'Guadalupe', 'Papúa Nueva Guinea', 'Azerbaiyán',
-       'Turkmenistán', 'Paraguay', 'Jordania', 'Hong Kong', 'Martinica',
-       'Moldavia', 'Qatar', 'Mali', 'Albania', 'República del Congo',
-       'Bosnia y Herzegovina', 'Omán', 'Túnez', 'Sierra Leona', 'Yibuti',
-       'Burundi', 'Montenegro', 'Gabón', 'Sudán del Sur', 'Luxemburgo',
-       'Namibia', 'Mauritania', 'Grecia', 'Suazilandia', 'Guyana',
-       'Guayana Francesa', 'República Centroafricana', 'Taiwán',
-       'Estonia', 'Líbano', 'Chipre', 'Guinea-Bissau', 'Surinam',
-       'Belice', 'Eslovenia', 'República de Gambia', 'Botsuana',
-       'Armenia', 'Guinea Ecuatorial', 'Kuwait', 'Bután', 'Chad',
-       'Serbia', 'Sáhara Occidental']  # Add real country options
+order_region_options = ["Southeast Asia", "South Asia", "Oceania", "Eastern Asia",
+                        "West Asia", "West of USA", "US Center", "West Africa",
+                        "Central Africa", "North Africa", "Western Europe",
+                        "Northern Europe", "Central America", "Caribbean", "South America",
+                        "East Africa", "Southern Europe", "East of USA", "Canada",
+                        "Southern Africa", "Central Asia", "Eastern Europe",
+                        "South of USA"]
+order_country_options = ["Indonesia", "India", "Australia", "China", "Japan",
+                         "South Korea", "Singapore", "Turkey", "Mongolia",
+                         "United States", "Nigeria", "Democratic Republic of the Congo",
+                         "Senegal", "Morocco", "Germany", "France", "Netherlands",
+                         "United Kingdom", "Guatemala", "El Salvador", "Panama",
+                         "Dominican Republic", "Venezuela", "Colombia", "Honduras",
+                         "Brazil", "Mexico", "Uruguay", "Argentina", "Cuba", "Peru",
+                         "Nicaragua", "Ecuador", "Angola", "Sudan", "Somalia",
+                         "Ivory Coast", "Egypt", "Italy", "Spain", "Sweden",
+                         "Austria", "Canada", "Madagascar", "Algeria", "Liberia", "Zambia",
+                         "Niger", "South Africa", "Mozambique", "Tanzania", "Rwanda", "Israel",
+                         "New Zealand", "Bangladesh", "Thailand", "Iraq", "Saudi Arabia",
+                         "Philippines", "Kazakhstan", "Iran", "Myanmar",
+                         "Uzbekistan", "Benin", "Cameroon", "Kenya", "Togo", "Ukraine",
+                         "Poland", "Portugal", "Romania", "Trinidad and Tobago",
+                         "Afghanistan", "Pakistan", "Vietnam", "Malaysia", "Finland",
+                         "Russia", "Ireland", "Norway", "Slovakia", "Belgium", "Bolivia",
+                         "Chile", "Jamaica", "Yemen", "Ghana", "Guinea", "Ethiopia",
+                         "Bulgaria", "Kyrgyzstan", "Georgia", "Nepal",
+                         "United Arab Emirates", "Cambodia", "Uganda", "Lesotho",
+                         "Lithuania", "Switzerland", "Hungary", "Denmark", "Haiti",
+                         "Belarus", "Croatia", "Laos", "Bahrain", "Macedonia",
+                         "Czech Republic", "Sri Lanka", "Zimbabwe", "Eritrea",
+                         "Burkina Faso", "Costa Rica", "Libya", "Barbados", "Tajikistan",
+                         "Syria", "Guadeloupe", "Papua New Guinea", "Azerbaijan",
+                         "Turkmenistan", "Paraguay", "Jordan", "Hong Kong", "Martinique",
+                         "Moldova", "Qatar", "Mali", "Albania", "Republic of the Congo",
+                         "Bosnia and Herzegovina", "Oman", "Tunisia", "Sierra Leone", "Djibouti",
+                         "Burundi", "Montenegro", "Gabon", "South Sudan", "Luxembourg",
+                         "Namibia", "Mauritania", "Greece", "Eswatini", "Guyana",
+                         "French Guiana", "Central African Republic", "Taiwan",
+                         "Estonia", "Lebanon", "Cyprus", "Guinea-Bissau", "Suriname",
+                         "Belize", "Slovenia", "Gambia", "Botswana",
+                         "Armenia", "Equatorial Guinea", "Kuwait", "Bhutan", "Chad",
+                         "Serbia", "Western Sahara"]
 
 # UI Inputs
 selected_market = st.selectbox("🌎 Market", market_options)
-selected_country = st.selectbox("🌍 Order Country", order_country_options)
+selected_region = st.selectbox("📍 Order Region", order_region_options)
+selected_country = st.selectbox("🏳️ Order Country", order_country_options)
 selected_department = st.selectbox("🏪 Department Name", department_options)
 
-order_item_profit_ratio = st.number_input("💰 Order Item Profit Ratio", min_value=0.0, value=0.1, step=0.01)
-order_item_total = st.number_input("📦 Order Item Total", min_value=0.0, value=500.0, step=10.0)
-sales_per_customer = st.number_input("👤 Sales per customer", min_value=0.0, value=100.0, step=1.0)
-order_item_product_price = st.number_input("🏷 Order Item Product Price", min_value=0.0, value=50.0, step=1.0)
-sales = st.number_input("📈 Sales", min_value=0.0, value=1000.0, step=10.0)
-product_price = st.number_input("💲 Product Price", min_value=0.0, value=200.0, step=1.0)
+# Set default profit ratio based on department
+profit_ratio_defaults = {
+    "Book Shop": 0.3,
+    "Discs Shop": 0.25,
+    "Fan Shop": 0.35,
+    "Fitness": 0.4,
+    "Footwear": 0.45,
+    "Golf": 0.5,
+    "Health and Beauty": 0.55,
+    "Outdoors": 0.6,
+    "Pet Shop": 0.3,
+    "Technology": 0.65
+}
 
-# Create input data dictionary
-input_data = {col: 0 for col in expected_columns}
+profit_ratio = st.slider("📈 Profit Ratio", min_value=0.0, max_value=1.0, step=0.01, value=profit_ratio_defaults.get(selected_department, 0.3))
+product_price = st.number_input("💰 Product Price", min_value=0.0, step=0.01)
+discount_rate = st.slider("🎯 Order Item Discount Rate", min_value=0.0, max_value=1.0, step=0.01)
 
-# Update with numeric values
-input_data.update({
-    "Order Item Profit Ratio": order_item_profit_ratio,
-    "Order Item Total": order_item_total,
-    "Sales per customer": sales_per_customer,
-    "Order Item Product Price": order_item_product_price,
-    "Sales": sales,
-    "Product Price": product_price
-})
+# Encode categorical variables
+encoded_market = market_encoder.transform([selected_market])[0]
+encoded_region = order_region_encoder.transform([selected_region])[0]
+encoded_country = order_country_encoder.transform([selected_country])[0]
 
-# Encode categorical features (One-Hot Encoding)
-market_encoded = f"Market_{selected_market}"
-department_encoded = f"Department Name_{selected_department}"
-country_encoded = f"Order Country_{selected_country}"  # New country feature
+# One-hot encode department names
+department_encoded = {f"Department Name_{dept}": 0 for dept in department_options}
+department_encoded[f"Department Name_{selected_department}"] = 1  # Set the selected department to 1
 
-if market_encoded in input_data:
-    input_data[market_encoded] = 1
-if department_encoded in input_data:
-    input_data[department_encoded] = 1
-if country_encoded in input_data:  # Handle Order Country encoding
-    input_data[country_encoded] = 1
+# Define feature names (must match training data feature names)
+feature_names = ["Market", "Order_Region", "Order_Country", "Profit_Ratio", "Product_Price", "Discount_Rate"] + list(department_encoded.keys())
 
-# Convert to DataFrame
-input_df = pd.DataFrame([input_data])
-
-# Ensure column order matches model training
-input_df = input_df.reindex(columns=expected_columns, fill_value=0)
-
-# Debugging: Show expected vs. actual features
-st.write("Expected Features:", expected_columns)
-st.write("Provided Features:", input_df.columns.tolist())
+# Convert input data into a DataFrame
+input_data = pd.DataFrame([[
+    encoded_market, encoded_region, encoded_country, 
+    profit_ratio, product_price, discount_rate
+] + list(department_encoded.values())], columns=feature_names)
 
 # Predict Button
 if st.button("🚀 Predict Profit"):
-    try:
-        prediction = gb_model_final.predict(input_df)
-        st.subheader("Predicted Profit (in USD):")
-        st.markdown(f"### 💲 **${prediction[0]:.2f}**")
-        st.success("✅ Prediction Successful!")
-    except Exception as e:
-        st.error(f"❌ Prediction Failed: {e}")
+    prediction = model.predict(input_data)
+    profit_label = "High Profit Order" if prediction[0] > 50 else "Low Profit Order"
+    st.subheader("Predicted Profit (in USD):")
+    st.markdown(f"### 💲 **${prediction[0]:.2f}** - {profit_label}")
+    st.success("✅ Prediction Successful!")
