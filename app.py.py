@@ -7,7 +7,7 @@ import pandas as pd
 with open('gb_model_final_hyper.pkl', 'rb') as model_file:
     gb_model_final = pickle.load(model_file)
 
-# Get expected feature names from the model (keeping spaces as is)
+# Get expected feature names from the model
 expected_columns = list(gb_model_final.feature_names_in_)
 
 # Define categorical options
@@ -24,6 +24,23 @@ profit_ratio_defaults = {
 
 # Streamlit UI
 st.set_page_config(page_title="Profit Predictor - DataCo Supply Chain", page_icon="📦", layout="wide")
+
+# Custom CSS for background
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-image: url("https://www.example.com/supply_chain_background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+[data-testid="stHeader"] {
+    background: rgba(0, 0, 0, 0);  /* Transparent header */
+}
+</style>
+"""
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
 st.title("Profit Predictor: Enhancing Business Decisions with Data Science")
 st.markdown("### 📊 Enter Order Details to Predict Profit:")
 
@@ -42,7 +59,7 @@ order_item_product_price = st.number_input("Order Item Product Price", min_value
 sales = st.number_input("Sales", min_value=0.0, value=1000.0, step=10.0)
 product_price = st.number_input("Product Price", min_value=0.0, value=200.0, step=1.0)
 
-# Create one-hot encoded columns (ensuring all required columns exist)
+# Create one-hot encoded columns
 input_data = {col: 0 for col in expected_columns}  # Initialize all to 0
 
 # Set numerical values
@@ -61,7 +78,7 @@ input_data[f"Market_{selected_market}"] = 1
 # Set one-hot encoding for selected department (keeping space as in trained model)
 input_data[f"Department Name_{selected_department} "] = 1  # Notice the space!
 
-# Convert to DataFrame and reorder columns
+# Convert to DataFrame
 input_df = pd.DataFrame([input_data])[expected_columns]
 
 # Predict when button is pressed
@@ -69,7 +86,6 @@ if st.button("Predict"):
     prediction = gb_model_final.predict(input_df)
     
     # Display the prediction
-    st.subheader("Predicted Profit per Order (in USD):")
+    st.subheader("Predicted Profit (in USD):")
     st.markdown(f"### 💲 **${prediction[0]:.2f}**")
-
     st.success("The model has successfully made a prediction!")
