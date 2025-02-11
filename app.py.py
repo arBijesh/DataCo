@@ -12,11 +12,17 @@ def get_base64_of_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode()
 
-# Apply background image with opacity effect
-def set_background(image_path, opacity=0.4):  # Adjust opacity (0.0 - fully transparent, 1.0 - fully visible)
+# Apply background image with a semi-transparent overlay
+def set_background(image_path):
     base64_image = get_base64_of_image(image_path)
     bg_style = f"""
     <style>
+    [data-testid="stAppViewContainer"] {{
+        background: url("data:image/png;base64,{base64_image}") no-repeat center center fixed;
+        background-size: cover;
+    }}
+    
+    /* Semi-transparent overlay */
     [data-testid="stAppViewContainer"]::before {{
         content: "";
         position: absolute;
@@ -24,13 +30,10 @@ def set_background(image_path, opacity=0.4):  # Adjust opacity (0.0 - fully tran
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(rgba(255, 255, 255, {opacity}), rgba(255, 255, 255, {opacity})), 
-                    url("data:image/png;base64,{base64_image}");
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
+        background: rgba(255, 255, 255, 0.4);  /* Adjust opacity here */
         z-index: -1;
     }}
+
     [data-testid="stHeader"] {{
         background: rgba(0, 0, 0, 0);  /* Transparent header */
     }}
@@ -39,7 +42,7 @@ def set_background(image_path, opacity=0.4):  # Adjust opacity (0.0 - fully tran
     st.markdown(bg_style, unsafe_allow_html=True)
 
 # Call the function to set background (make sure "background.jpg" exists in the same folder)
-set_background("background.jpg", opacity=0.5)  # Adjust opacity here
+set_background("background.jpg")  # Use your logistics-themed image
 
 # Load trained model
 with open('gb_model_final_hyper.pkl', 'rb') as model_file:
