@@ -23,8 +23,48 @@ expected_columns = list(gb_model_final.feature_names_in_)
 
 # Define categorical options
 market_options = ["Europe", "LATAM", "Pacific Asia", "USCA"]
-order_region_options = ["Region_1", "Region_2", "Region_3", "Region_4", "Region_5"]  # Replace with actual regions
-order_country_options = ["USA", "Germany", "India", "France", "Brazil", "UK", "Japan", "China"]
+order_region_options = ['Southeast Asia', 'South Asia', 'Oceania', 'Eastern Asia',
+       'West Asia', 'West of USA ', 'US Center ', 'West Africa',
+       'Central Africa', 'North Africa', 'Western Europe',
+       'Northern Europe', 'Central America', 'Caribbean', 'South America',
+       'East Africa', 'Southern Europe', 'East of USA', 'Canada',
+       'Southern Africa', 'Central Asia', 'Eastern Europe',
+       'South of  USA ']
+order_country_options = ['Indonesia', 'India', 'Australia', 'China', 'Japón',
+       'Corea del Sur', 'Singapur', 'Turquía', 'Mongolia',
+       'Estados Unidos', 'Nigeria', 'República Democrática del Congo',
+       'Senegal', 'Marruecos', 'Alemania', 'Francia', 'Países Bajos',
+       'Reino Unido', 'Guatemala', 'El Salvador', 'Panamá',
+       'República Dominicana', 'Venezuela', 'Colombia', 'Honduras',
+       'Brasil', 'México', 'Uruguay', 'Argentina', 'Cuba', 'Perú',
+       'Nicaragua', 'Ecuador', 'Angola', 'Sudán', 'Somalia',
+       'Costa de Marfil', 'Egipto', 'Italia', 'España', 'Suecia',
+       'Austria', 'Canada', 'Madagascar', 'Argelia', 'Liberia', 'Zambia',
+       'Níger', 'SudAfrica', 'Mozambique', 'Tanzania', 'Ruanda', 'Israel',
+       'Nueva Zelanda', 'Bangladés', 'Tailandia', 'Irak', 'Arabia Saudí',
+       'Filipinas', 'Kazajistán', 'Irán', 'Myanmar (Birmania)',
+       'Uzbekistán', 'Benín', 'Camerún', 'Kenia', 'Togo', 'Ucrania',
+       'Polonia', 'Portugal', 'Rumania', 'Trinidad y Tobago',
+       'Afganistán', 'Pakistán', 'Vietnam', 'Malasia', 'Finlandia',
+       'Rusia', 'Irlanda', 'Noruega', 'Eslovaquia', 'Bélgica', 'Bolivia',
+       'Chile', 'Jamaica', 'Yemen', 'Ghana', 'Guinea', 'Etiopía',
+       'Bulgaria', 'Kirguistán', 'Georgia', 'Nepal',
+       'Emiratos Árabes Unidos', 'Camboya', 'Uganda', 'Lesoto',
+       'Lituania', 'Suiza', 'Hungría', 'Dinamarca', 'Haití',
+       'Bielorrusia', 'Croacia', 'Laos', 'Baréin', 'Macedonia',
+       'República Checa', 'Sri Lanka', 'Zimbabue', 'Eritrea',
+       'Burkina Faso', 'Costa Rica', 'Libia', 'Barbados', 'Tayikistán',
+       'Siria', 'Guadalupe', 'Papúa Nueva Guinea', 'Azerbaiyán',
+       'Turkmenistán', 'Paraguay', 'Jordania', 'Hong Kong', 'Martinica',
+       'Moldavia', 'Qatar', 'Mali', 'Albania', 'República del Congo',
+       'Bosnia y Herzegovina', 'Omán', 'Túnez', 'Sierra Leona', 'Yibuti',
+       'Burundi', 'Montenegro', 'Gabón', 'Sudán del Sur', 'Luxemburgo',
+       'Namibia', 'Mauritania', 'Grecia', 'Suazilandia', 'Guyana',
+       'Guayana Francesa', 'República Centroafricana', 'Taiwán',
+       'Estonia', 'Líbano', 'Chipre', 'Guinea-Bissau', 'Surinam',
+       'Belice', 'Eslovenia', 'República de Gambia', 'Botsuana',
+       'Armenia', 'Guinea Ecuatorial', 'Kuwait', 'Bután', 'Chad',
+       'Serbia', 'Sáhara Occidental']
 department_options = ["Book Shop", "Discs Shop", "Fan Shop", "Fitness", "Footwear",
                       "Golf", "Health and Beauty", "Outdoors", "Pet Shop", "Technology"]
 
