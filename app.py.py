@@ -2,47 +2,53 @@ import streamlit as st
 import pickle
 import numpy as np
 import pandas as pd
-import base64
 
-# ✅ First Streamlit command (MUST be at the very top)
+# Set up the page early to avoid Streamlit errors
 st.set_page_config(page_title="Profit Predictor - DataCo Supply Chain", page_icon="📦", layout="wide")
 
-# Function to encode the local image
-def get_base64_of_image(image_path):
-    with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode()
-
-# Apply background image with a semi-transparent overlay
-def set_background(image_path):
-    base64_image = get_base64_of_image(image_path)
-    bg_style = f"""
-    <style>
-    [data-testid="stAppViewContainer"] {{
-        background: url("data:image/png;base64,{base64_image}") no-repeat center center fixed;
-        background-size: cover;
-    }}
-    
-    /* Semi-transparent overlay */
-    [data-testid="stAppViewContainer"]::before {{
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.4);  /* Adjust opacity here */
-        z-index: -1;
-    }}
-
-    [data-testid="stHeader"] {{
-        background: rgba(0, 0, 0, 0);  /* Transparent header */
-    }}
-    </style>
+# Custom CSS for background and frosted-glass effect
+st.markdown(
     """
-    st.markdown(bg_style, unsafe_allow_html=True)
+    <style>
+    body {
+        background: url('https://source.unsplash.com/1600x900/?supply-chain,logistics') no-repeat center center fixed;
+        background-size: cover;
+    }
+    .stApp {
+        background: rgba(0, 0, 0, 0.4);
+        padding: 20px;
+        border-radius: 15px;
+    }
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+        color: white;
+    }
+    .stSelectbox, .stNumber_input, .stButton {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 10px;
+        color: white;
+        backdrop-filter: blur(10px);
+    }
+    .stButton > button {
+        background: linear-gradient(45deg, #FF512F, #DD2476);
+        color: white;
+        font-size: 18px;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+    .stButton > button:hover {
+        background: linear-gradient(45deg, #DD2476, #FF512F);
+        transform: scale(1.05);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# Call the function to set background (make sure "background.jpg" exists in the same folder)
-set_background("background.jpg")  # Use your logistics-themed image
+st.title("🚀 Profit Predictor: Enhancing Business Decisions with Data Science")
+st.markdown("### 📊 Enter Order Details to Predict Profit:")
 
 # Load trained model
 with open('gb_model_final_hyper.pkl', 'rb') as model_file:
@@ -63,28 +69,21 @@ profit_ratio_defaults = {
     "Pet Shop": 0.0001, "Technology": 0.0020
 }
 
-st.title("Profit Predictor: Enhancing Business Decisions with Data Science")
-st.markdown("### 📊 Enter Order Details to Predict Profit:")
-
-# Dropdowns
-selected_market = st.selectbox("Market", market_options)
-selected_department = st.selectbox("Department Name", department_options, key="department")
-
-# Automatically set the profit ratio based on department selection
+# UI Inputs
+selected_market = st.selectbox("🌎 Market", market_options)
+selected_department = st.selectbox("🏪 Department Name", department_options)
 order_item_profit_ratio = profit_ratio_defaults.get(selected_department, 0.0)
-order_item_profit_ratio = st.number_input("Order Item Profit Ratio", min_value=0.0, value=order_item_profit_ratio, step=0.01)
+order_item_profit_ratio = st.number_input("💰 Order Item Profit Ratio", min_value=0.0, value=order_item_profit_ratio, step=0.01)
 
 # Numeric inputs
-order_item_total = st.number_input("Order Item Total", min_value=0.0, value=500.0, step=10.0)
-sales_per_customer = st.number_input("Sales per customer", min_value=0.0, value=100.0, step=1.0)
-order_item_product_price = st.number_input("Order Item Product Price", min_value=0.0, value=50.0, step=1.0)
-sales = st.number_input("Sales", min_value=0.0, value=1000.0, step=10.0)
-product_price = st.number_input("Product Price", min_value=0.0, value=200.0, step=1.0)
+order_item_total = st.number_input("📦 Order Item Total", min_value=0.0, value=500.0, step=10.0)
+sales_per_customer = st.number_input("👤 Sales per customer", min_value=0.0, value=100.0, step=1.0)
+order_item_product_price = st.number_input("🏷 Order Item Product Price", min_value=0.0, value=50.0, step=1.0)
+sales = st.number_input("📈 Sales", min_value=0.0, value=1000.0, step=10.0)
+product_price = st.number_input("💲 Product Price", min_value=0.0, value=200.0, step=1.0)
 
-# Create one-hot encoded columns
-input_data = {col: 0 for col in expected_columns}  # Initialize all to 0
-
-# Set numerical values
+# Data Processing for Model
+input_data = {col: 0 for col in expected_columns}
 input_data.update({
     "Order Item Profit Ratio": order_item_profit_ratio,
     "Order Item Total": order_item_total,
@@ -93,21 +92,13 @@ input_data.update({
     "Sales": sales,
     "Product Price": product_price
 })
-
-# Set one-hot encoding for selected market
 input_data[f"Market_{selected_market}"] = 1
-
-# Set one-hot encoding for selected department (keeping space as in trained model)
 input_data[f"Department Name_{selected_department} "] = 1  # Notice the space!
-
-# Convert to DataFrame
 input_df = pd.DataFrame([input_data])[expected_columns]
 
-# Predict when button is pressed
-if st.button("Predict"):
+# Predict Button
+if st.button("🚀 Predict Profit"):
     prediction = gb_model_final.predict(input_df)
-    
-    # Display the prediction
     st.subheader("Predicted Profit (in USD):")
     st.markdown(f"### 💲 **${prediction[0]:.2f}**")
-    st.success("The model has successfully made a prediction!")
+    st.success("✅ Prediction Successful!")
