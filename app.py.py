@@ -71,7 +71,21 @@ selected_region = st.selectbox("📍 Order Region", order_region_options)
 selected_country = st.selectbox("🏳️ Order Country", order_country_options)
 selected_department = st.selectbox("🏪 Department Name", department_options)
 
-profit_ratio = st.slider("📈 Profit Ratio", min_value=0.0, max_value=1.0, step=0.01)
+# Set default profit ratio based on department
+profit_ratio_defaults = {
+    "Book Shop": 0.3,
+    "Discs Shop": 0.25,
+    "Fan Shop": 0.35,
+    "Fitness": 0.4,
+    "Footwear": 0.45,
+    "Golf": 0.5,
+    "Health and Beauty": 0.55,
+    "Outdoors": 0.6,
+    "Pet Shop": 0.3,
+    "Technology": 0.65
+}
+
+profit_ratio = st.slider("📈 Profit Ratio", min_value=0.0, max_value=1.0, step=0.01, value=profit_ratio_defaults[selected_department])
 product_price = st.number_input("💰 Product Price", min_value=0.0, step=0.01)
 discount_rate = st.slider("🎯 Order Item Discount Rate", min_value=0.0, max_value=1.0, step=0.01)
 
