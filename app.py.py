@@ -10,7 +10,7 @@ st.title("🚀 Profit Predictor: Enhancing Business Decisions with Data Science"
 st.markdown("### 📊 Enter Order Details to Predict Profit:")
 
 # Load trained Gradient Boosting model
-with open("gb_model_final_hyper.pkl", "rb") as model_file:
+with open("gb_model_final_hyperparameter.pkl", "rb") as model_file:
     model = pickle.load(model_file)
 
 # Load LabelEncoders
