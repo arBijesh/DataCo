@@ -15,7 +15,7 @@ st.markdown(
         background-size: cover;
     }
     .stApp {
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(0, 0, 0, 0.6);
         padding: 20px;
         border-radius: 15px;
     }
@@ -23,11 +23,11 @@ st.markdown(
         color: white;
     }
     .stSelectbox, .stNumber_input, .stButton {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.3);
         border-radius: 10px;
         padding: 10px;
         color: white;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
     }
     .stButton > button {
         background: linear-gradient(45deg, #FF512F, #DD2476);
@@ -40,7 +40,10 @@ st.markdown(
     }
     .stButton > button:hover {
         background: linear-gradient(45deg, #DD2476, #FF512F);
-        transform: scale(1.05);
+        transform: scale(1.1);
+    }
+    .stNumber_input, .stSelectbox {
+        font-size: 16px;
     }
     </style>
     """,
