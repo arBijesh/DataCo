@@ -71,13 +71,17 @@ selected_region = st.selectbox("📍 Order Region", order_region_options)
 selected_country = st.selectbox("🏳️ Order Country", order_country_options)
 selected_department = st.selectbox("🏪 Department Name", department_options)
 
+profit_ratio = st.slider("📈 Profit Ratio", min_value=0.0, max_value=1.0, step=0.01)
+product_price = st.number_input("💰 Product Price", min_value=0.0, step=0.01)
+discount_rate = st.slider("🎯 Order Item Discount Rate", min_value=0.0, max_value=1.0, step=0.01)
+
 # Encode categorical variables
 encoded_market = market_encoder.transform([selected_market])[0]
 encoded_region = order_region_encoder.transform([selected_region])[0]
 encoded_country = order_country_encoder.transform([selected_country])[0]
 
 # Prepare input data
-input_data = np.array([...]).reshape(1, -1)
+input_data = np.array([encoded_market, encoded_region, encoded_country, profit_ratio, product_price, discount_rate]).reshape(1, -1)
 
 # Predict Button
 if st.button("🚀 Predict Profit"):
