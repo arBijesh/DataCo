@@ -80,8 +80,11 @@ encoded_market = market_encoder.transform([selected_market])[0]
 encoded_region = order_region_encoder.transform([selected_region])[0]
 encoded_country = order_country_encoder.transform([selected_country])[0]
 
+# Prepare department encoding
+department_encoding = [1 if dept == selected_department else 0 for dept in department_options]
+
 # Prepare input data
-input_data = np.array([encoded_market, encoded_region, encoded_country, profit_ratio, product_price, discount_rate]).reshape(1, -1)
+input_data = np.array([encoded_market, encoded_region, encoded_country, profit_ratio, product_price, discount_rate] + department_encoding).reshape(1, -1)
 
 # Predict Button
 if st.button("🚀 Predict Profit"):
