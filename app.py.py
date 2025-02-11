@@ -68,13 +68,30 @@ order_country_options = ['Indonesia', 'India', 'Australia', 'China', 'Japón',
 department_options = ["Book Shop", "Discs Shop", "Fan Shop", "Fitness", "Footwear",
                       "Golf", "Health and Beauty", "Outdoors", "Pet Shop", "Technology"]
 
+# Default profit ratio for each department
+default_profit_ratios = {
+    "Book Shop": 0.10,
+    "Discs Shop": 0.08,
+    "Fan Shop": 0.12,
+    "Fitness": 0.15,
+    "Footwear": 0.18,
+    "Golf": 0.20,
+    "Health and Beauty": 0.25,
+    "Outdoors": 0.22,
+    "Pet Shop": 0.17,
+    "Technology": 0.30
+}
+
 # UI Inputs
 selected_market = st.selectbox("🌎 Market", market_options)
 selected_region = st.selectbox("🏙 Order Region", order_region_options)
 selected_country = st.selectbox("🌍 Order Country", order_country_options)
 selected_department = st.selectbox("🏪 Department Name", department_options)
 
-order_item_profit_ratio = st.number_input("💰 Order Item Profit Ratio", min_value=-1.0, value=0.1, step=0.01)
+# Assign default profit ratio based on department selection
+default_profit_ratio = default_profit_ratios.get(selected_department, 0.10)
+
+order_item_profit_ratio = st.number_input("💰 Order Item Profit Ratio", min_value=-1.0, value=default_profit_ratio, step=0.01)
 product_price = st.number_input("💲 Product Price", min_value=0.0, value=200.0, step=1.0)
 order_item_discount_rate = st.number_input("🔖 Order Item Discount Rate", min_value=0.0, value=0.05, step=0.01)
 
@@ -106,10 +123,6 @@ input_df = pd.DataFrame([input_data])
 
 # Ensure column order matches model training
 input_df = input_df.reindex(columns=expected_columns, fill_value=0)
-
-# Debugging: Show expected vs. actual features
-st.write("Expected Features:", expected_columns)
-st.write("Provided Features:", input_df.columns.tolist())
 
 # Predict Button
 if st.button("🚀 Predict Profit"):
